@@ -69,9 +69,6 @@ const startServer = async () => {
     // Test database connection
     await testConnection();
 
-    // Initialize database tables
-    await initializeDatabase();
-
     // Start server
     app.listen(PORT, () => {
       console.log(`🚀 Server is running on port ${PORT}`);

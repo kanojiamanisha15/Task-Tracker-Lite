@@ -31,6 +31,34 @@ class DatabaseSeeder {
       throw error;
     }
   }
+  static async seedNormalUser() {
+    try {
+      // Check if normal user already exists
+      const normalUserExists = await User.findOne({
+        where: { email: "user@tasktracker.com" },
+      });
+
+      if (!normalUserExists) {
+        const hashedPassword = await bcrypt.hash("user123", 12);
+
+        const normalUser = await User.create({
+          name: "Normal User",
+          email: "user@tasktracker.com",
+          password: hashedPassword,
+          role: "user",
+        });
+
+        console.log("✅ Normal user created successfully:", normalUser.email);
+        return normalUser;
+      } else {
+        console.log("ℹ️  Normal user already exists:", normalUserExists.email);
+        return normalUserExists;
+      }
+    } catch (error) {
+      console.error("❌ Error seeding normal user:", error.message);
+      throw error;
+    }
+  }
 
   // Seed default categories
   static async seedCategories(adminUserId) {
@@ -167,11 +195,14 @@ class DatabaseSeeder {
       // Seed admin user first
       const adminUser = await this.seedAdminUser();
 
+      // Seed normal user
+      const normalUser = await this.seedNormalUser();
+
       // Seed categories
       const categories = await this.seedCategories(adminUser.id);
 
       // Seed sample tasks (optional - comment out if not needed)
-      const tasks = await this.seedSampleTasks(adminUser.id, categories);
+      const tasks = await this.seedSampleTasks(normalUser.id, categories);
 
       console.log("\n🎉 Database seeding completed successfully!");
       console.log("\n📊 Summary:");
