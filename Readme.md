@@ -1,5 +1,10 @@
 # Frontend-Backend Connection Setup
 
+## Demo Video
+
+I’ve uploaded a demo video in the root directory for reference:
+
+[▶️ Watch the demo](./workingDemo.webm)
 This guide explains how to connect and run the frontend and backend together.
 
 ## Port Configuration
