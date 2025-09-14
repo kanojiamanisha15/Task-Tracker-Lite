@@ -10,11 +10,16 @@ const getUserTasks = async (req, res) => {
       limit = 10,
       sort_by = "createdAt",
       sort_order = "DESC",
-      user_id,
+      userId,
     } = req.query;
-    const userId = user_id ?? req.user.userId;
+    let user_id;
+    if (req.user.role === "admin") {
+      user_id = userId ?? undefined; // Admin can filter by any user
+    } else {
+      user_id = req.user.userId;
+    }
 
-    const result = await TaskService.getUserTasks(userId, {
+    const result = await TaskService.getUserTasks(user_id, {
       status,
       category_id,
       page,
@@ -199,32 +204,10 @@ const deleteTask = async (req, res) => {
   }
 };
 
-// Get task statistics for user
-const getTaskStats = async (req, res) => {
-  try {
-    const userId = req.user.userId;
-    const stats = await TaskService.getUserTaskStats(userId);
-
-    res.status(200).json({
-      success: true,
-      data: {
-        stats,
-      },
-    });
-  } catch (error) {
-    console.error("Get task stats error:", error);
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch task statistics",
-    });
-  }
-};
-
 module.exports = {
   getUserTasks,
   getTaskById,
   createTask,
   updateTask,
   deleteTask,
-  getTaskStats,
 };

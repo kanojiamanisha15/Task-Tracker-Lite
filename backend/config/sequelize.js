@@ -38,7 +38,7 @@ const testConnection = async () => {
 // Sync database function
 const syncDatabase = async () => {
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: false });
     console.log("✅ Database synchronized successfully");
   } catch (error) {
     console.error("❌ Database synchronization failed:", error.message);

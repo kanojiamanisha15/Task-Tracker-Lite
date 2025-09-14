@@ -14,7 +14,12 @@ class TaskService {
     } = filters;
 
     // Build where clause
-    const where = { userId };
+    const where = {};
+    if (userId) {
+      where.user_id = userId;
+    }
+    console.log("where", where);
+
     if (status) where.status = status;
     if (category_id) where.categoryId = category_id;
 

@@ -19,7 +19,6 @@ router.use(authenticateToken);
 
 // Task routes
 router.get("/", getUserTasks);
-router.get("/stats", getTaskStats);
 router.get("/:id", getTaskById);
 router.post("/", validateTask, createTask);
 router.put("/:id", validateTaskUpdate, updateTask);
